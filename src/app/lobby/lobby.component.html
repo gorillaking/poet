@@ -1,0 +1,8 @@
+<div *ngFor="let game of lobbyInfo" class="border">
+  <p>name: {{game.name}}</p>
+  <p>players: {{game.seatedPlayers}}/{{game.playerCount}}</p>
+  <p>turns: {{game.turnCount}}</p>
+  <p>duration: {{game.turnDuration}}</p>
+  <button *ngIf='game.isPlaying'>Join</button>
+</div>
+<button (click)="createRoom()">Create</button>
