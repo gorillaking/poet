@@ -3,6 +3,7 @@ import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LobbyInfo } from './lobby-info';
+import { TimeConverter } from './time-converter';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,15 @@ export class LobbyService {
 
   onUpdate(): Observable<LobbyInfo[]> {
     return this.socket.fromEvent('lobby-update')
-      .pipe(map((lobbyInfo: LobbyInfo[]) => 
-        lobbyInfo.map((l: LobbyInfo) => { 
-          return new LobbyInfo(l.id, l.name, l.playerCount, l.seatedPlayers, l.turnCount, l.turnDuration, l.isPlaying);
+      .pipe(map((lobbyInfo: any[]) => 
+        lobbyInfo.map((l: any) => { 
+          return new LobbyInfo(l.id, 
+            l.name,
+            l.playerCount,
+            l.seatedPlayers,
+            l.turnCount,
+            new TimeConverter(l.turnDuration),
+            l.isPlaying);
         })));
   }
 }

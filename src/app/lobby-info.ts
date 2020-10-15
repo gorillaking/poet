@@ -1,3 +1,5 @@
+import { TimeConverter } from './time-converter';
+
 export class LobbyInfo {
   constructor(
     public id: string,
@@ -5,6 +7,6 @@ export class LobbyInfo {
     public playerCount: number,
     public seatedPlayers: number,
     public turnCount: number,
-    public turnDuration: number,
+    public turnDuration: TimeConverter,
     public isPlaying: boolean) {}
 }

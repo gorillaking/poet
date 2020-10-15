@@ -1,8 +1,14 @@
-<div *ngFor="let game of lobbyInfo" class="border">
-  <p>name: {{game.name}}</p>
-  <p>players: {{game.seatedPlayers}}/{{game.playerCount}}</p>
-  <p>turns: {{game.turnCount}}</p>
-  <p>duration: {{game.turnDuration}}</p>
-  <button *ngIf='game.isPlaying'>Join</button>
+<div class='container'>
+  <mat-grid-list class="border" cols="3" rowHeight="33%">
+    <mat-grid-tile *ngFor="let game of lobbyInfo" class="border">
+      <div class='gameInfo'>
+        <p>name: {{game.name}}</p>
+        <p>players: {{game.seatedPlayers}}/{{game.playerCount}}</p>
+        <p>turns: {{game.turnCount}}</p>
+        <p>duration: {{game.turnDuration.format()}}</p>
+        <button *ngIf='!game.isPlaying' (click)="join(game.id)">Join</button>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <button class='big-button' (click)="showCreateRoomDialog()" *ngIf="lobbyInfo.length < 9">Create</button>
 </div>
-<button (click)="createRoom()">Create</button>

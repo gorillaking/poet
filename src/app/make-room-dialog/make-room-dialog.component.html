@@ -1,0 +1,6 @@
+<p>Name: <input type='text' #name autocomplete="off" required/></p>
+<p>Players: <input type='text' #players autocomplete="off" numberOnly min=2 max=8 required/></p>
+<p>Turns: <input type='text' #turns autocomplete="off" numberOnly min=1 max=10 required/></p>
+<p>Minutes: <input type='text' #min autocomplete="off" numberOnly max=5 required/> Seconds: <input type='text' #sec autocomplete="off" numberOnly max=59 required/></p>
+<button (click)="createRoom(name.value, players.value, turns.value, min.value, sec.value)">Create</button>
+<button (click)="close()">Close</button>

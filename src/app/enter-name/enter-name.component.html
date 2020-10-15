@@ -1,4 +1,4 @@
 <p>Enter your name</p>
-<p><input type="text" #name (keyup)="keyup(name.value)" [value]='playerName' autocomplete="off"/></p>
-<p *ngIf="invalidName">please enter a display name</p>
-<p><button (click)="click()">click</button></p>
+<p><input type="text" #name (keyup)="keyup(name.value)" (keydown.enter)='click()' [value]='playerName' autocomplete="off"/></p>
+<p class='warning' *ngIf="invalidName">please enter a display name</p>
+<p><button (click)="click()">Enter</button></p>

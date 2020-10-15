@@ -1,0 +1,67 @@
+<div class="topbar outline">
+  <div class='data' style="margin-left: 0px;">
+    <h3>Room Name</h3>
+    <p>{{metadata.name}}</p>
+  </div> 
+  <div class='data'>
+    <h3>Host</h3>
+    <p>{{metadata.host.name}}</p>
+  </div>  
+  <div class='data'>
+    <h3>Players</h3>
+    <p>{{players.length}}/{{metadata.players}}</p>
+  </div>
+  <div class='data'>
+    <h3>Turn</h3>
+    <p>{{state.currentTurn}}/{{metadata.turns}}</p>
+  </div> 
+  <div class='data'>
+    <h3>Time</h3>
+    <p *ngIf='!state.isTurnStarted; else timer;'>{{metadata.time.format()}}</p>
+    <ng-template #timer>
+      {{remainingTime.format()}}
+    </ng-template>
+  </div>
+</div>
+
+<div class='main'>
+  <div *ngIf='!state.isPlaying; else ingame;'>
+    <h2 class='title'>players</h2>
+    <div id='waiting-list' class='outline'>
+      <div *ngFor='let p of players' class='outline player'>
+        <p>{{p.name}}</p>
+      </div>
+    </div>
+  </div>
+  <ng-template #ingame>
+    <h2 class='title'>Turn order</h2>
+    <div id='turnOrder' class='outline'>
+      <div *ngFor='let p of state.turnOrder' class='outline turnPlayer' [style.background]='isCurrentTurnPlayer(p.id) ? "red" : "white" '>
+        <p>{{p.name}}</p>
+        <p>{{getPlayerScore(p.id)}}</p>
+          <button class='point' *ngIf='canShowDeductPoint(p.id)' (click)='deductPoint(1)'>-1</button> 
+          <button class='point' (click)='assignPoint(p.id, 1)' *ngIf='canShowPoint1(p.id)' [disabled]='disablePoint1()'>+1</button>
+          <button class='point' (click)='assignPoint(p.id, 3)' *ngIf='canShowPoint3(p.id)' [disabled]='disablePoint3()'>+3</button>
+      </div>
+    </div>
+    <div *ngIf='canShowCard()' class='card'>
+      <div class='word'>
+        <h3>1</h3>
+        <div [ngClass]="{'guessed': state.has1PointAssigned}">{{card.point1}}</div>
+      </div>
+      <div class='word'>
+        <h3>3</h3>
+        <div [ngClass]="{'guessed': state.has3PointsAssigned}">{{card.point3}}</div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<div class='outline bottombar'>
+  <button (click)='start()' [disabled]='!canStart()'>Start</button>
+  <button (click)='startTurn()' [disabled]='!canStartTurn()'>Start Turn</button>
+  <button (click)='pause()' [disabled]='!canPause()'>Pause</button>
+  <button (click)='resume()' [disabled]='!canResume()'>Resume</button>
+  <button (click)='endTurn()' [disabled]='!canEndTurn()'>Stop Turn</button>
+  <button id='leave' (click)='leave()'>Leave</button>
+</div>

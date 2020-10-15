@@ -1,13 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { CreateRoom } from '../create-room';
 import { LobbyInfo } from '../lobby-info';
 import { LobbyService} from '../lobby.service';
-import { PlayerService } from '../player.service';
-import { RoomService } from '../room.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { PopupComponent } from '../popup/popup.component';
-import { first } from 'rxjs/operators';
+import { MakeRoomDialogComponent } from '../make-room-dialog/make-room-dialog.component';
+import { PopupDialogComponent } from '../popup-dialog/popup-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lobby',
@@ -19,9 +17,8 @@ export class LobbyComponent implements OnInit, OnDestroy {
   lobbyInfo: LobbyInfo[] = [];
   
   constructor(private lobbyService: LobbyService,
-    private roomService: RoomService,
-    private playerService: PlayerService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -34,19 +31,28 @@ export class LobbyComponent implements OnInit, OnDestroy {
     this.lobbyService.leave();
   }
 
-  createRoom(): void {
-    this.roomService.createRoom(new CreateRoom("test", 5, 3, 1000), this.playerService.getPlayer()).subscribe(
-      (gameId: string) => {console.log('test1')},
-      (error) => {
-        this.showPopup(error.message);
-      });
+  showCreateRoomDialog(): void {
+    const dialogConfig = new MatDialogConfig();
+    let createRoomDialog = this.matDialog.open(MakeRoomDialogComponent, dialogConfig);
+    createRoomDialog.afterClosed().subscribe((data: any) => {
+      if(!data) { return; }
+      if(data.success) {
+        this.router.navigate([`game/${data.gameId}`]);
+      } else {
+        this.showError(data.message);
+      }
+    })
   }
 
-  showPopup(message: string): void {
+  showError(message: string): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       message: message
     };
-    this.matDialog.open(PopupComponent, dialogConfig);
+    this.matDialog.open(PopupDialogComponent, dialogConfig);
+  }
+
+  join(gameId: string): void{
+    this.router.navigate([`game/${gameId}`]);
   }
 }

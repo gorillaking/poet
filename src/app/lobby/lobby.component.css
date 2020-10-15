@@ -1,3 +1,26 @@
 .border {
   border: 1px solid black;
 }
+
+.container{
+  width: 80vw;
+  height: 800px;
+  margin: auto;
+}
+
+.mat-grid-list {
+  height: 100% !important;
+}
+
+mat-grid-tile {
+  background-color: skyblue;
+}
+
+.gameInfo {
+  text-align: center;
+}
+
+.big-button{
+  width: 160px;
+  height: 80px;
+}
