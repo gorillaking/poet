@@ -160,7 +160,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   canStart(): boolean {
-    return !this.state.isPlaying && this.player.id === this.metadata.host.id;
+    return !this.state.isPlaying && this.players.length > 1 && this.player.id === this.metadata.host.id;
   }
 
   canStartTurn(): boolean {
