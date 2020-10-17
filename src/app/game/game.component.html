@@ -17,9 +17,9 @@
   </div> 
   <div class='data'>
     <h3>Time</h3>
-    <p *ngIf='!state.isTurnStarted; else timer;'>{{metadata.time.format()}}</p>
+    <p *ngIf='!state.isTurnStarted; else timer;'>{{metadata.time.fullFormat()}}</p>
     <ng-template #timer>
-      {{remainingTime.format()}}
+      {{remainingTime.fullFormat()}}
     </ng-template>
   </div>
 </div>
